@@ -6,7 +6,7 @@
 #define INCREMENTAL_CLICKER_GENERATOR_HPP
 
 #include <cstdint>
-#include <math.h>
+#include <cmath>
 #include <unordered_map>
 #include <kernel/bignum.hpp>
 

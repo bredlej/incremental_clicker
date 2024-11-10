@@ -10,6 +10,9 @@
 #include <core.hpp>
 #include <unordered_map>
 #include <generator.hpp>
+#include <town/infrastructure/adapters/primary/raylib_tavern_service_adapter.hpp>
+#include <town/infrastructure/adapters/secondary/entt_tavern_repository_adapter.hpp>
+#include <town/application/tavern_service.hpp>
 
 class ClickerApp {
 public:
