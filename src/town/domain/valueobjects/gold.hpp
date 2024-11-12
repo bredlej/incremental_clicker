@@ -8,7 +8,7 @@
 #include <kernel/bignum.hpp>
 
 struct Gold {
-    BigNum value;
+    BigNumber value;
 };
 
 #endif //INCREMENTAL_CLICKER_GOLD_HPP

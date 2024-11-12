@@ -9,7 +9,7 @@
 #include <string>
 #include <unordered_map>
 
-class BigNum {
+class BigNumber {
     double value;
     int exp;
     bool negative;
@@ -20,19 +20,19 @@ class BigNum {
     static const std::unordered_map<int, std::string> powTenToAffix;
 
 public:
-    constexpr BigNum() {
+    constexpr BigNumber() {
         this->value = 0;
         this->exp = 0;
         this->negative = false;
     }
-    constexpr BigNum(double value, int exp = 0) : value(value), exp(exp), negative(false) {
+    constexpr BigNumber(double value, int exp = 0) : value(value), exp(exp), negative(false) {
         if (value < 0) {
             throw std::invalid_argument("Negative numbers are not supported.");
         }
         normalize();
     }
 
-    constexpr BigNum(BigNum const &other) {
+    constexpr BigNumber(BigNumber const &other) {
         this->value = other.value;
         this->exp = other.exp;
         this->negative = other.negative;
@@ -62,10 +62,10 @@ public:
         }
     }
 
-    constexpr BigNum add(const BigNum& bigNum) const {
-        BigNum result = *this;
+    constexpr BigNumber add(const BigNumber& bigNum) const {
+        BigNumber result = *this;
         if (bigNum.exp < result.exp) {
-            BigNum temp = bigNum;
+            BigNumber temp = bigNum;
             temp.align(result.exp);
             result.value += temp.value;
         } else {
@@ -76,10 +76,10 @@ public:
         return result;
     }
 
-    constexpr BigNum subtract(const BigNum& bigNum) const {
-        BigNum result = *this;
+    constexpr BigNumber subtract(const BigNumber& bigNum) const {
+        BigNumber result = *this;
         if (bigNum.exp < result.exp) {
-            BigNum temp = bigNum;
+            BigNumber temp = bigNum;
             temp.align(result.exp);
             result.value -= temp.value;
         } else {
@@ -90,8 +90,8 @@ public:
         return result;
     }
 
-    constexpr BigNum multiply(double factor) const {
-        BigNum result = *this;
+    constexpr BigNumber multiply(double factor) const {
+        BigNumber result = *this;
         if (factor >= 0) {
             result.value *= factor;
             result.normalize();
@@ -99,8 +99,8 @@ public:
         return result;
     }
 
-    constexpr BigNum divide(double divisor) const {
-        BigNum result = *this;
+    constexpr BigNumber divide(double divisor) const {
+        BigNumber result = *this;
         if (divisor > 0) {
             result.value /= divisor;
             result.normalize();
@@ -108,9 +108,9 @@ public:
         return result;
     }
 
-    constexpr int compare(const BigNum& bigNum) const {
-        BigNum a = *this;
-        BigNum b = bigNum;
+    constexpr int compare(const BigNumber& bigNum) const {
+        BigNumber a = *this;
+        BigNumber b = bigNum;
         a.align(b.exp);
         b.align(a.exp);
         if (a.value < b.value) return -1;

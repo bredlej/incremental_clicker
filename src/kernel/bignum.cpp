@@ -3,8 +3,8 @@
 //
 #include <kernel/bignum.hpp>
 
-const double BigNum::TEN_CUBED = 1000.0;
-const std::unordered_map<int, std::string> BigNum::powTenToName = {
+const double BigNumber::TEN_CUBED = 1000.0;
+const std::unordered_map<int, std::string> BigNumber::powTenToName = {
         {0, ""}, {3, "thousand"}, {6, "million"}, {9, "billion"}, {12, "trillion"},
         {15, "quadrillion"}, {18, "quintillion"}, {21, "sextillion"}, {24, "septillion"},
         {27, "octillion"}, {30, "nonillion"}, {33, "decillion"}, {36, "undecillion"},
@@ -43,7 +43,7 @@ const std::unordered_map<int, std::string> BigNum::powTenToName = {
         {327, "octocentillion"}, {330, "novencentillion"}, {333, "decicentillion"}
 };
 
-const std::unordered_map<int, std::string> BigNum::powTenToAffix = {
+const std::unordered_map<int, std::string> BigNumber::powTenToAffix = {
         {0, ""}, {3, "K"}, {6, "M"}, {9, "B"}, {12, "T"},
         {15, "Qa"}, {18, "Qi"}, {21, "Sx"}, {24, "Sp"},
         {27, "Oc"}, {30, "N"}, {33, "Dc"}, {36, "UnDc"},

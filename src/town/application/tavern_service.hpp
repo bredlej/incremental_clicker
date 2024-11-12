@@ -7,18 +7,30 @@
 
 #include <town/domain/ports/primary/tavern_service_port.hpp>
 #include <town/domain/ports/secondary/tavern_repository.hpp>
-
-class TavernService : public ITavernService{
+#include <cstdint>
+class TavernService : public ITavernService {
 public:
-    explicit TavernService(ITavernRepository& repository)
+    explicit TavernService(ITavernRepository &repository)
             : repository(repository) {}
 
-    void sell_food() override {
+    void sell_food() const override {
         repository.sell_food();
     }
 
-    void increase_food_capacity() override {
-        repository.increase_food_capacity();
+    void increase_food_sales() const override {
+        repository.increase_food_sales();
+    }
+
+    void hire_food_helper() const override {
+        repository.hire_food_helper([this]() {this->sell_food();});
+    }
+
+    Amount amount_gold_generators() const override {
+        return repository.amount_food_sales_generators();
+    }
+
+    Gold cost_of_next_gold_generator() override {
+        return repository.cost_of_next_food_sales_generator();
     }
 
     [[nodiscard]] Gold get_gold_amount() const override {
@@ -26,6 +38,7 @@ public:
     }
 
 private:
-    ITavernRepository& repository;
+    ITavernRepository &repository;
 };
+
 #endif //INCREMENTAL_CLICKER_TAVERN_SERVICE_HPP
