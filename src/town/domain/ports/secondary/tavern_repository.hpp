@@ -16,7 +16,7 @@ public:
     virtual ~ITavernRepository() = default;
     virtual void sell_food() const = 0;
     virtual void increase_food_sales() const = 0;
-    virtual void hire_food_helper(const std::function<void()>&) const = 0;
+    virtual void hire_food_helper(uint32_t ms = 600) const = 0;
     virtual Amount amount_food_sales_generators() const = 0;
     virtual Gold cost_of_next_food_sales_generator() const = 0;
     virtual Gold get_gold_amount() const = 0;

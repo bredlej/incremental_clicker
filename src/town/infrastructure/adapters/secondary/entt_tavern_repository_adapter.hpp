@@ -17,7 +17,7 @@ public:
     explicit EnttTavernRepositoryAdapter(Core &core) : _core{core}, _tavern{_core.registry.create()} {
         _core.registry.emplace<Gold>(_tavern.id(), BigNumber(0.0));
 
-        GeneratorMap gm{std::unordered_map<Resource, Generator>{{Resource::Food, _tavern.food_sales()}}};
+        GeneratorMap gm{std::unordered_map<Resource, Generator>{{Resource::Food, Tavern<entt::entity>::food_sales()}}};
         _core.registry.emplace<GeneratorMap>(_tavern.id(), gm);
 
         AutomatedProductionMap apm{std::unordered_map<Resource, AutomatedProduction>{}};
@@ -45,16 +45,19 @@ public:
         gm.values[Resource::Food] = gold_generator;
     }
 
-    void hire_food_helper(const std::function<void()> &func) const override {
+    void hire_food_helper(uint32_t ms) const override {
         auto &apm = _core.registry.get<AutomatedProductionMap>(_tavern.id());
         if (!apm.contains(Resource::Food)) {
-            apm[Resource::Food] = {600, 0};
-            _core.scheduler.attach([this, &func](auto delta, void *, auto succeed, auto fail) {
+            apm[Resource::Food] = {ms, 0};
+            _core.scheduler.attach([this](auto delta, void *, auto succeed, auto fail) {
                 auto &automated_production = _core.registry.get<AutomatedProductionMap>(_tavern.id())[Resource::Food];
                 automated_production.time_since_last += delta;
                 if (automated_production.time_since_last > automated_production.invokes_every_ms) {
-                    sell_food();
-                    automated_production.time_since_last -= automated_production.invokes_every_ms;
+                    auto times_to_invoke = automated_production.time_since_last / automated_production.invokes_every_ms;
+                    for (int i = 0; i < times_to_invoke; i++) {
+                        sell_food();
+                        automated_production.time_since_last -= automated_production.invokes_every_ms;
+                    }
                 }
             });
         }
@@ -72,6 +75,15 @@ public:
         return _core.registry.get<Gold>(_tavern.id());
     }
 
+    GeneratorMap& get_generator_map() const {
+        return _core.registry.get<GeneratorMap>(_tavern.id());
+    }
+    AutomatedProductionMap &get_automated_production_map() const {
+        return _core.registry.get<AutomatedProductionMap>(_tavern.id());
+    }
+    void set_gold(const Gold gold) {
+        _core.registry.emplace_or_replace<Gold>(_tavern.id(), gold);
+    }
 private:
     [[nodiscard]] Generator _food_sales_generator() const {
         return _core.registry.get<GeneratorMap>(_tavern.id()).values.at(Resource::Food);

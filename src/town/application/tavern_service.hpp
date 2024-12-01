@@ -22,7 +22,7 @@ public:
     }
 
     void hire_food_helper() const override {
-        repository.hire_food_helper([this]() {this->sell_food();});
+        repository.hire_food_helper();
     }
 
     Amount amount_gold_generators() const override {

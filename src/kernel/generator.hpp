@@ -10,7 +10,7 @@
 #include <unordered_map>
 #include <kernel/bignum.hpp>
 #include <kernel/enums.hpp>
-
+#include <nlohmann/json.hpp>
 
 struct Amount {
     uint32_t value;
@@ -60,6 +60,27 @@ public:
         return (_productivity.value * _amount_owned.value) * _production_multiplier.value;
     }
 
+    void to_json(nlohmann::json &j) const {
+        j = nlohmann::json {
+                {"product", _product},
+                {"cost_val", _cost.persistence().value},
+                {"cost_exp", _cost.persistence().exp},
+                {"growth_coefficient", _growth_coefficient.value},
+                {"amount", _amount_owned.value},
+                {"productivity", _productivity.value},
+                {"production_multiplier", _production_multiplier.value}
+        };
+    }
+
+    void from_json(const nlohmann::json &j) {
+        j.at("product").get_to(_product);
+        BigNumberValue bnv{};
+        _cost = BigNumber{j.at("cost_val"), j.at("cost_exp")};
+        j.at("growth_coefficient").get_to(_growth_coefficient.value);
+        j.at("amount").get_to(_amount_owned.value);
+        j.at("productivity").get_to(_productivity.value);
+        j.at("production_multiplier").get_to(_production_multiplier.value);
+    }
 private:
     Resource _product;
     BigNumber _cost;

@@ -9,6 +9,10 @@
 #include <string>
 #include <unordered_map>
 
+struct BigNumberValue {
+    double value;
+    int exp;
+};
 class BigNumber {
     double value;
     int exp;
@@ -30,6 +34,10 @@ public:
             throw std::invalid_argument("Negative numbers are not supported.");
         }
         normalize();
+    }
+
+    BigNumberValue persistence() const {
+        return {value, exp};
     }
 
     constexpr BigNumber(BigNumber const &other) {

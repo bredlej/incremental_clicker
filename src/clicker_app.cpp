@@ -8,9 +8,9 @@ void ClickerApp::run() {
     Core core;
     RaylibContext ctx;
 
-    EnttTavernRepositoryAdapter tavern_repository{ core };
-    TavernService tavern_service{ tavern_repository };
-    RaylibTavernServiceAdapter raylib_tavern_adapter{ tavern_service };
+    EnttTavernRepositoryAdapter tavern_repository{core};
+    TavernService tavern_service{tavern_repository};
+    RaylibTavernServiceAdapter raylib_tavern_adapter{tavern_service};
 
     Scheduler<std::chrono::milliseconds> scheduler(core);
     scheduler.builder()
@@ -38,6 +38,14 @@ void ClickerApp::run() {
         }
 
         EndDrawing();
+    };
+
+    Persistence persistence(core, tavern_repository);
+    ctx.pre_loop_func = [&persistence](Core &core) {
+        persistence.restore_state();
+    };
+    ctx.post_loop_func = [&persistence](Core &core) {
+        persistence.save_state();
     };
 
     ctx.run(core);

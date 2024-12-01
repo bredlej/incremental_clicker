@@ -10,11 +10,12 @@
 #include <core.hpp>
 #include <unordered_map>
 #include <kernel/scheduler.hpp>
-#include "kernel/generator.hpp"
+#include <kernel/generator.hpp>
+#include <kernel/persistence.hpp>
 #include <town/infrastructure/adapters/primary/raylib_tavern_service_adapter.hpp>
 #include <town/infrastructure/adapters/secondary/entt_tavern_repository_adapter.hpp>
 #include <town/application/tavern_service.hpp>
-
+#include <nlohmann/json.hpp>
 class ClickerApp {
 public:
     static void run();
